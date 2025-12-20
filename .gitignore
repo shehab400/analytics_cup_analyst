@@ -1,0 +1,6 @@
+output videos/
+output_videos/
+output_json/
+__pycache__/
+Data/
+trial.ipynb
