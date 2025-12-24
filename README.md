@@ -4,7 +4,7 @@
 ## Introduction
 
 Extracting similar plays to a given football play from tracking data is a challenging task due to the high dimensionality, temporal dependency, and natural variability in execution.
-Traditional similarity methods based on event labels or fixed-length representations often fail to capture the underlying spatiotemporal structure of a play. Even trajectory-based approaches face difficulties when comparing plays of different durations and tempos.
+Traditional similarity methods often fail to capture the underlying spatiotemporal structure of a play. Even trajectory-based approaches face difficulties when comparing plays of different durations and tempos.
 
 *Identifying Similar Football Plays Through Ball Movement Patterns* addresses these challenges through a trajectory-driven approach centered on ball movement during **player possession events**. The proposed method applies **Dynamic Time Warping (DTW)** to align and compare ball trajectories in a way that is robust to temporal distortion and variable play lengths. By computing similarity scores across extracted plays, the approach enables the retrieval of the **top-N most similar football plays for any given play**, supporting efficient exploration of recurring movement patterns and alternative play executions.
 
