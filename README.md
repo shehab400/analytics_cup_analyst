@@ -66,7 +66,7 @@ These files can be used directly by the website.
 **Tip:**  
 - To change the number of events per sequence or the target match for similarity search, edit the relevant configuration variables in the notebook cells.  
 - Make sure to adjust `manifest.json` with the match's sequences IDs.  
-- Included is the `manifest.json` for match **1886347**.
+- Included is the `manifest.json` for match **1886347** for **10 Events Sequences**.
 
 ### 5. Run the Website
 
