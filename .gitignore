@@ -4,3 +4,10 @@ output_json/
 __pycache__/
 Data/
 trial.ipynb
+*.mp4
+mainfest.py
+Merging_Dynamic_Events_and_Tracking_Data_Tutorial.ipynb
+plot_sequence_from_csv.py
+test_website_subset_sequence.py
+transform.py
+data.ipynb

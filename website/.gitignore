@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.cache/
+.parcel-cache/
+*.log
+npm-debug.log*
+.DS_Store
+.env
+.env.local
+public/data/play_data.json
+public/data/
+static/data/10517
+public/1886347_
+static/data/play_data.json
+
+

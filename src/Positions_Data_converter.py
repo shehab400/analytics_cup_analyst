@@ -112,6 +112,7 @@ def extract_ball_coordinates(match_ids: List[str], fixed_num_events: int,
     os.makedirs(output_dir, exist_ok=True)
     
     all_data = []
+    frame_ranges = []
     total_sequences = 0
     normalized_count = 0
     
@@ -137,11 +138,12 @@ def extract_ball_coordinates(match_ids: List[str], fixed_num_events: int,
         print(f"  Found {len(sequences)} sequences")
         
         # Extract ball coordinates with orientation normalization
-        extracted_data = extract_sequences_with_n_positions(
-            sequences, fixed_num_events, match_id)
+        extracted_data, extracted_ranges = extract_sequences_with_n_positions(
+            sequences, fixed_num_events, match_id, return_frame_ranges=True)
         
         if extracted_data:
             all_data.extend(extracted_data)
+            frame_ranges.extend(extracted_ranges)
             total_sequences += len(sequences)
             normalized_count += sum(1 for seq in sequences if seq.get('attacking_side') == 'right_to_left')
             print(f"  Extracted sequences: {len(extracted_data)}")
@@ -154,6 +156,14 @@ def extract_ball_coordinates(match_ids: List[str], fixed_num_events: int,
         output_file = os.path.join(output_dir, 
             f"all_matches_{fixed_num_events}_positions_normalized.csv")
         df.to_csv(output_file, index=False)
+
+        # Save frame ranges to a separate file
+        if frame_ranges:
+            df_ranges = pd.DataFrame(frame_ranges)
+            frame_range_file = os.path.join(output_dir, f"all_matches_{fixed_num_events}_frame_ranges.csv")
+            df_ranges.to_csv(frame_range_file, index=False)
+            print(f"Saved frame ranges: {frame_range_file}")
+
         print(f"\n{'='*60}")
         print(f"Saved combined data: {output_file}")
         print(f"Total sequences processed: {total_sequences}")
@@ -167,7 +177,7 @@ def extract_ball_coordinates(match_ids: List[str], fixed_num_events: int,
 
 
 def extract_sequences_with_n_positions(sequences: List[Dict], fixed_num_positions: int, 
-                                      match_id: str) -> List[Dict]:
+                                      match_id: str, return_frame_ranges: bool = False) -> List[Dict]:
     """
     Extract ball coordinates from sequences and normalize orientation.
     
@@ -187,6 +197,7 @@ def extract_sequences_with_n_positions(sequences: List[Dict], fixed_num_position
     """
     
     extracted_sequences = []
+    frame_ranges = []
     
     for sequence in sequences:
         seq_id = sequence.get('sequence_id')
@@ -202,6 +213,7 @@ def extract_sequences_with_n_positions(sequences: List[Dict], fixed_num_position
         
         # Extract coordinates in frame order
         all_coords = []
+        all_frames_in_order = []
         for frame in frames:
             frame_key = str(frame)
             if frame_key in normalized_positions:
@@ -209,29 +221,26 @@ def extract_sequences_with_n_positions(sequences: List[Dict], fixed_num_position
                 if len(coords) >= 2:
                     x, y = coords[0], coords[1]
                     z = coords[2] if len(coords) > 2 else None
-                    
                     coord = {'x': x, 'y': y}
                     if z is not None:
                         coord['z'] = z
                     all_coords.append(coord)
-        
+                    all_frames_in_order.append(frame)
         # Only process if we found coordinates for all frames
         if len(all_coords) >= fixed_num_positions:
             # Create non-overlapping subsets
             num_subsets = len(all_coords) // fixed_num_positions
-            
             # If we have leftover positions after dividing, we ignore them (non-overlapping)
             for subset_idx in range(num_subsets):
                 start_idx = subset_idx * fixed_num_positions
                 end_idx = start_idx + fixed_num_positions
                 subset_coords = all_coords[start_idx:end_idx]
-                
+                subset_frames = all_frames_in_order[start_idx:end_idx]
                 # Format sequence_id: if only one subset, keep original id; otherwise add subset{i}
                 if num_subsets == 1:
                     final_seq_id = seq_id
                 else:
                     final_seq_id = f"{seq_id}_subset{subset_idx}"
-                
                 extracted_sequences.append({
                     'match_id': match_id,
                     'sequence_id': final_seq_id,
@@ -241,7 +250,16 @@ def extract_sequences_with_n_positions(sequences: List[Dict], fixed_num_position
                     'num_positions': fixed_num_positions,
                     'coordinates_json': json.dumps(subset_coords)
                 })
-    
+                if return_frame_ranges:
+                    if subset_frames:
+                        frame_ranges.append({
+                            'match_id': match_id,
+                            'sequence_id': final_seq_id,
+                            'start_frame': subset_frames[0],
+                            'end_frame': subset_frames[-1]
+                        })
+    if return_frame_ranges:
+        return extracted_sequences, frame_ranges
     return extracted_sequences
 
 
@@ -256,7 +274,7 @@ if __name__ == "__main__":
         description='Extract and normalize ball coordinates from position sequences')
     parser.add_argument('--match-ids', nargs='+', default=None,
                        help='List of match IDs to process (auto-discover if not specified)')
-    parser.add_argument('--fixed-num-positions', type=int, default=4,
+    parser.add_argument('--fixed-num-positions', type=int, default=10,
                        help='Number of positions a sequence must have (default: 4)')
     parser.add_argument('--input-dir', default=r'D:\college\pysport analytics cup\output_json',
                        help='Directory containing position JSON files (default: D:\\college\\pysport analytics cup\\output_json)')
