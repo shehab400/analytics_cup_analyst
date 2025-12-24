@@ -1,4 +1,5 @@
-# Football Play Similarity – Analyst Track Abstract
+# *Identifying Similar Football Plays Through Ball Movement Patterns*
+#### A DTW-Based Trajectory Similarity Approach Using SkillCorner Open Data - Analyst Track Abstract
 
 ## Introduction
 
