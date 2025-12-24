@@ -16,4 +16,4 @@ The resulting similarity matrix enables clustering and retrieval of structurally
 
 ## Potential Audience
 
-This solution is designed for football analysts and data scientists working with SkillCorner tracking data, performance and opposition analysts seeking automated play pattern discovery, and researchers applying time-series similarity methods to football analytics.
+This solution is designed for football analysts, coaches, and data scientists working with tracking/events data, performance and opposition analysts seeking automated play pattern discovery, and researchers applying time-series similarity methods to football analytics.
