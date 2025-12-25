@@ -1,6 +1,14 @@
 # *Identifying Similar Football Plays Through Ball Movement Patterns*
 #### A DTW-Based Trajectory Similarity Approach Using SkillCorner Open Data - Analyst Track Abstract
 
+<p align="center">
+  <img src="Assets/Football%20Play%20Similarity.png" 
+       alt="Football Play Similarity" 
+       width="700" 
+       style="border-radius: 15px; border: 2px solid #ccc;"/>
+</p>
+
+
 ## Introduction
 
 Extracting similar plays to a given football play from tracking data is a challenging task due to the high dimensionality, temporal dependency, and natural variability in execution.
