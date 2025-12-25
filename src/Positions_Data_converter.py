@@ -85,8 +85,8 @@ def normalize_sequence_positions(sequence: Dict[str, Any]) -> Dict[str, Any]:
 def extract_ball_coordinates(match_ids: List[str], fixed_num_events: int, 
                             input_dir: str, output_dir: str = None) -> str:
     """
-    Extract ball coordinates for sequences with a specific number of positions.
-    Combines all matches into a single CSV file with orientation normalization.
+     It extracts, normalizes, and exports ball trajectory data for sequences of a fixed length from multiple matches, 
+     ready for further analysis or visualization.
     
     Parameters:
     -----------
