@@ -54,7 +54,7 @@ No manual download is needed.
 
 ### 3. Run The Pipeline
 
-Open `Data_preprocessing_and_similarity_score_calculation.ipynb`.
+Open `submission.ipynb`.
 
 Run each cell in order:
 
@@ -63,11 +63,12 @@ Run each cell in order:
 3. **Extract ball positions for all sequences**  
 4. **Normalize and convert data for similarity scoring**
 5. **Compute DTW similarity matrix**
-6. **Export top-N similar plays for website integration**
+6. **Find Similar Sequences**
+7. **(Optional) Export top-N similar plays for website integration**
 
 ### 4. Website Integration
 
-After running the notebook, JSON files for similar plays will be saved in: website/public/<MATCH_ID>/
+After running the Last cell in the notebook, JSON files for similar plays will be saved in: website/public/<MATCH_ID>/
 
 These files can be used directly by the website.
 
